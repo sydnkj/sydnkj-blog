@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn config set registry https://registry.npmmirror.com \
-    && yarn \
-    && yarn build \
+RUN yarn && yarn build 
+
+EXPOSE 3000
 
 CMD ["node", ".output/server/index.mjs"]
