@@ -6,11 +6,14 @@ COPY . ./source/
 
 SHELL ["/usr/bin/bash", "-c"]
 
-RUN cd ./source
+WORKDIR ./source
+
 RUN yarn --production 
 RUN yarn build 
 RUN mv ./.output/* ../
-RUN cd ../
+
+WORKDIR /app
+
 RUN rm -rf ./source
 
 EXPOSE 3000
