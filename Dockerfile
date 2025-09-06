@@ -1,10 +1,8 @@
-FROM node:24.7-bookworm
+FROM node:24.7-alpine
 
 WORKDIR /app
 
 COPY . ./source/
-
-SHELL ["/usr/bin/bash", "-c"]
 
 WORKDIR ./source
 
