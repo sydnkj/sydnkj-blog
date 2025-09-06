@@ -1,11 +1,18 @@
-FROM node:24.2-alpine
+FROM node:24.7-bookworm
 
 WORKDIR /app
 
-COPY . .
+COPY . ./source/
 
-RUN yarn && yarn build 
+SHELL ["/usr/bin/bash", "-c"]
+
+RUN cd ./source
+RUN yarn --production 
+RUN yarn build 
+RUN mv ./.output/* ../
+RUN cd ../
+RUN rm -rf ./source
 
 EXPOSE 3000
 
-CMD ["node", ".output/server/index.mjs"]
+CMD ["node", "./server/index.mjs"]
