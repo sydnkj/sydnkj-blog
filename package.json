@@ -1,0 +1,20 @@
+{
+  "name": "blog",
+  "description": "a blog project for wjchome",
+  "author": {
+    "name": "WenisOK",
+    "url": "https://www.wjchome.cn"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.11.2",
+    "nuxt": "^4.0.2",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.18"
+  },
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "preview": "nuxi preview"
+  },
+  "devDependencies": {}
+}

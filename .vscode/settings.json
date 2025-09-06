@@ -1,0 +1,17 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.arrowParens": "always",
+  "prettier.singleQuote": true,
+  "prettier.singleAttributePerLine": false,
+  "prettier.htmlWhitespaceSensitivity": "ignore",
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
+  "prettier.semi": true,
+  "prettier.bracketSameLine": false,
+  "prettier.printWidth": 120,
+  "path-intellisense.mappings": {
+    "~": "${workspaceRoot}",
+    "@assets": "${workspaceRoot}/assets",
+    "@": "${workspaceRoot}/components"
+  }
+}

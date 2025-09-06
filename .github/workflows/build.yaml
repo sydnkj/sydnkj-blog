@@ -1,0 +1,21 @@
+name: 构建项目打包Docker并推送到Docker仓库
+on: ['workflow_dispatch', 'push']
+
+jobs:
+  build:
+    runs-on: ubuntu
+    steps:
+      - name: 检出仓库代码
+        uses: actions/checkout@main
+
+      - name: 构建Docker镜像
+        run: |
+          docker build -t sydnkj-blog:latest .
+
+      - name: 推送Docker到仓库
+        run: |
+          docker login --username=${{ secrets.USERNAME }} --password=${{ secrets.PASSWORD }} ${{ secrets.REGISTRY }}
+          docker push ${{ secrets.REGISTRY }}/${{ secrets.NAMESPACE}}/${{ secrets.IMAGE_NAME }}:latest
+      - name: 清理
+        run: |
+          docker logout
