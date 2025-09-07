@@ -1,12 +1,27 @@
 <script setup>
 import ThemeChange from './ThemeChange.vue';
 import Logo from './Logo.vue';
+import { useStore } from '~/store/main.js';
+const store = useStore();
+const toTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 </script>
 <template>
   <header>
     <div class="header-container">
       <div class="header-item header-logo">
         <Logo />
+      </div>
+      <div class="header-item header-post">
+        <Transition name="header-title-fade" mode="out-in">
+          <!-- 显示当前文章标题 -->
+          <div class="header-post-title" @click="toTop" v-if="store.posts.headerTitle">{{ store.posts.title }}</div>
+          <!-- 显示网页菜单 -->
+          <div v-else>
+            <span>首页</span>
+          </div>
+        </Transition>
       </div>
       <div class="header-item header-actions">
         <ThemeChange />
@@ -50,6 +65,23 @@ header {
 .header-actions {
   gap: 16px;
 }
+.header-title-fade-enter-active,
+.header-title-fade-leave-active {
+  transition: all 0.25s ease-in-out;
+}
+.header-title-fade-enter-from,
+.header-title-fade-leave-to {
+  transform: translateY(-60px);
+}
+.header-title-fade-enter-to,
+.header-title-fade-leave-from {
+  transform: translateY(0);
+}
+.header-post-title {
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+}
 html.dark header {
   box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
 }
@@ -59,6 +91,9 @@ html.dark header {
     justify-content: center;
   }
   .header-item.header-actions {
+    display: none;
+  }
+  .header-item.header-post {
     display: none;
   }
 }
