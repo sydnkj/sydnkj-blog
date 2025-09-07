@@ -15,14 +15,14 @@
       </div>
       <div class="beian">
         <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" class="beian-link">
-          赣ICP备2021001480号
+          赣ICP备2024039096号
         </a>
         <a
-          href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36072202000221"
+          href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36072202000256"
           target="_blank"
           class="beian-link"
         >
-          赣公网安备36072202000221号
+          赣公网安备36072202000256号
         </a>
       </div>
       <div class="footer-divider"></div>

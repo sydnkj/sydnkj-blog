@@ -19,7 +19,7 @@ const toTop = () => {
           <div class="header-post-title" @click="toTop" v-if="store.posts.headerTitle">{{ store.posts.title }}</div>
           <!-- 显示网页菜单 -->
           <div v-else>
-            <span>首页</span>
+            <span></span>
           </div>
         </Transition>
       </div>
