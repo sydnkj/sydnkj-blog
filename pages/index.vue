@@ -45,13 +45,13 @@ useHead({
   width: 75%;
   box-sizing: border-box;
   padding-right: 20px;
-  margin-top: var(--gap-size);
+  margin: var(--gap-size) 0;
 }
 
 .column-small {
   width: 25%;
   box-sizing: border-box;
-  margin-bottom: 20px;
+  margin: var(--gap-size) 0;
 }
 
 /* 响应式 */

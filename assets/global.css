@@ -11,6 +11,7 @@
   --description-text-color: #5c5c5c;
   --big-card-hover-background-color: #f9f9f9;
   --border-color: #e0e0e0;
+  --header-background-color: rgba(255, 255, 255, 0.6);
 }
 
 /* 全局页面样式 */
@@ -35,6 +36,7 @@ html.dark {
   --description-text-color: #c5c5c5;
   --big-card-hover-background-color: var(--hover-background-color);
   --border-color: #444;
+  --header-background-color: rgba(47, 47, 47, 0.6);
 }
 
 #__nuxt {
@@ -53,8 +55,10 @@ body a {
 @keyframes opacityInto {
   0% {
     opacity: 0;
+    transform: translateY(20px);
   }
   100% {
+    transform: translateY(0);
     opacity: 1;
   }
 }

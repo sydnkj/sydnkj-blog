@@ -1,6 +1,5 @@
 <script setup>
 import CommentIcon from '@assets/icons/CommentIcon.vue';
-import HeartIcon from '@assets/icons/HeartIcon.vue';
 import CalendarIcon from '@assets/icons/CalendarIcon.vue';
 import { TransitionGroup } from 'vue';
 const props = defineProps({
@@ -9,43 +8,37 @@ const props = defineProps({
 </script>
 <template>
   <div class="big-card-container">
-    <TransitionGroup name="big-card" tag="div" class="big-card-list">
-      <div class="big-card" v-for="item in props.data" :key="item.articleId">
-        <div class="big-card-header">
-          <NuxtLink :to="`/posts/${item.articleId}`">
-            <div class="big-card-title">
-              {{ item.title }}
-            </div>
-          </NuxtLink>
-          <div class="big-card-author">
-            <a href="#" target="_blank">{{ item.author }}</a>
-            <div style="display: flex; align-items: center">
-              <CalendarIcon></CalendarIcon>
-              <span>{{ item.createDate }}</span>
-            </div>
+    <div class="big-card" v-for="item in props.data" :key="item.articleId">
+      <div class="big-card-header">
+        <NuxtLink to="/posts/1">
+          <div class="big-card-title">
+            {{ item.title }}
           </div>
-        </div>
-        <div class="big-card-description">{{ item.summary }}</div>
-        <div class="big-card-info">
-          <NuxtLink :to="`/posts/${item.articleId}`">
-            <div class="big-card-info-more">
-              <span>阅读全文</span>
-              <span>→</span>
-            </div>
-          </NuxtLink>
-          <div class="big-card-info-counts">
-            <div class="big-card-info-count-item">
-              <HeartIcon></HeartIcon>
-              <span>{{ item.likeCount }}</span>
-            </div>
-            <div class="big-card-info-count-item">
-              <CommentIcon></CommentIcon>
-              <span>{{ item.commentCount }}</span>
-            </div>
+        </NuxtLink>
+        <div class="big-card-author">
+          <a href="#" target="_blank">{{ item.author }}</a>
+          <div style="display: flex; align-items: center">
+            <CalendarIcon></CalendarIcon>
+            <span>{{ item.createDate }}</span>
           </div>
         </div>
       </div>
-    </TransitionGroup>
+      <div class="big-card-description">{{ item.summary }}</div>
+      <div class="big-card-info">
+        <NuxtLink to="/posts/1">
+          <div class="big-card-info-more">
+            <span>阅读全文</span>
+            <span>→</span>
+          </div>
+        </NuxtLink>
+        <div class="big-card-info-counts">
+          <div class="big-card-info-count-item">
+            <CommentIcon></CommentIcon>
+            <span>{{ item.commentCount }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -68,25 +61,6 @@ const props = defineProps({
   box-shadow: 0 3px 12px rgb(0 0 0 / 5%);
   opacity: 1;
   transform: translateY(0);
-}
-.big-card-enter-from {
-  opacity: 0;
-  transform: translateY(30px);
-}
-.big-card-enter-active {
-  transition: all 0.5s ease-in-out;
-}
-.big-card-leave-to {
-  opacity: 0;
-  transform: translateY(20px);
-}
-.big-card-leave-active {
-  position: absolute;
-  width: 100%;
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-.big-card-move {
-  transition: transform 0.3s ease-in-out;
 }
 .big-card-header {
   border-bottom: dashed 1px var(--border-color);

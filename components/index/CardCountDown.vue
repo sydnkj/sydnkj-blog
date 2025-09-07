@@ -88,7 +88,6 @@ countdownList.value = countdownList.value.map((item) => ({
   background-color: var(--hover-text-color);
   border-radius: 5px;
   overflow: hidden;
-  margin-top: 20px;
 }
 
 html.dark .countdown-header {

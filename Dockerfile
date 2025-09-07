@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . ./source/
 
-RUN cd ./source ; yarn --production ; yarn build ; mv ./.output/* ../ ; cd .. ; rm -rf ./source ; yarn cache clean
+RUN cd ./source ; yarn --production ; yarn build ; mv ./.output/* ../ ; cd .. ; rm -rf ./source ; yarn cache clean --all  
 
 EXPOSE 3000
 

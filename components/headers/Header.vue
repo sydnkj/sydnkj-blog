@@ -18,7 +18,7 @@ import Logo from './Logo.vue';
 header {
   height: 64px;
   width: 100%;
-  background-color: var(--background-color);
+  background-color: var(--header-background-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,6 +29,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 99;
+  backdrop-filter: blur(10px);
 }
 .header-container {
   max-width: 1200px;
