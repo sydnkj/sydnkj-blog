@@ -3,28 +3,20 @@ import ArticleLists from '@/index/ArticleLists.vue';
 import CardCountDown from '@/index/CardCountDown.vue';
 import Calendar from '@/index/Calendar.vue';
 import CardSiteInfo from '@/index/CardSiteInfo.vue';
+import { useStore } from '~/store/main.js';
+const store = useStore();
+// 配置网页标题
 useHead({
-  title: '小温技术知识 · 首页',
+  title: '信丰县书彦电脑科技 · 首页',
 });
 </script>
 <template>
   <div id="body">
     <div class="column-big">
-      <ArticleLists></ArticleLists>
+      <ArticleLists />
     </div>
     <div class="column-small">
-      <CardCountDown
-        :countdowns="[
-          {
-            name: '2025年春节',
-            date: '2025-01-29',
-          },
-          {
-            name: '2026年春节',
-            date: '2026-02-17',
-          },
-        ]"
-      ></CardCountDown>
+      <CardCountDown></CardCountDown>
       <Calendar></Calendar>
       <CardSiteInfo></CardSiteInfo>
     </div>

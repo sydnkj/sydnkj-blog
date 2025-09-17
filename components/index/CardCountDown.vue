@@ -2,25 +2,27 @@
 import FlagIcon from '@assets/icons/FlagIcon.vue';
 import CalendarIcon from '@assets/icons/CalendarIcon.vue';
 import { ref } from 'vue';
+import { useStore } from '~/store/main.js';
+const store = useStore();
 
-// 接收的props，支持对象或数组
-const props = defineProps({
-  countdowns: {
-    type: [Object, Array],
-    required: true,
-    validator: (value) => {
-      // 验证数据格式
-      if (Array.isArray(value)) {
-        return value.every((item) => item.name && item.date);
-      } else {
-        return value.name && value.date;
-      }
-    },
-  },
-});
+// 从服务器获取数据
+const errorMessage = ref('');
+if (!store.server.error) {
+  const { data, error } = await useFetch('/api/tools/countdowns', {
+    method: 'get',
+    immediate: store.tools.countdowns.length === 0,
+  });
+  if (data.value) {
+    if (data.value.status !== 'failed') {
+      store.tools.countdowns = data.value;
+    } else {
+      errorMessage.value = data.value.error.message;
+    }
+  }
+}
 
 // 处理数据为数组格式
-const countdownList = ref(Array.isArray(props.countdowns) ? props.countdowns : [props.countdowns]);
+const countdownList = ref(Array.isArray(store.tools.countdowns) ? store.tools.countdowns : [store.tools.countdowns]);
 
 // 计算两个日期之间的天数（仅初始化时计算一次，刷新页面才更新）
 const calculateDays = (targetDate) => {
@@ -61,7 +63,7 @@ countdownList.value = countdownList.value.map((item) => ({
           <span>倒数日</span>
         </div>
       </div>
-      <div class="countdown-body" v-for="(item, index) in countdownList" :key="index">
+      <div class="countdown-body" v-if="!errorMessage" v-for="(item, index) in countdownList" :key="index">
         <div class="countdown-body-icon">
           <CalendarIcon width="30px" />
         </div>
@@ -76,6 +78,7 @@ countdownList.value = countdownList.value.map((item) => ({
           </div>
         </div>
       </div>
+      <div style="box-sizing: border-box; padding: 20px" v-else>{{ errorMessage }}</div>
       <div class="countdown-footer"></div>
     </div>
   </div>

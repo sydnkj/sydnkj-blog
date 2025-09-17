@@ -153,6 +153,7 @@ onMounted(generateCalendar);
   grid-template-columns: repeat(7, 1fr);
   gap: 2px;
   padding: 10px;
+  min-height: 203px;
 }
 
 .calendar-day {

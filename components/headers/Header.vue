@@ -16,10 +16,8 @@ const toTop = () => {
       <div class="header-item header-post">
         <Transition name="header-title-fade" mode="out-in">
           <!-- 显示当前文章标题 -->
-          <div class="header-post-title" @click="toTop" v-if="store.posts.headerTitle">{{ store.posts.title }}</div>
-          <!-- 显示网页菜单 -->
-          <div v-else>
-            <span></span>
+          <div class="header-post-title" @click="toTop" v-if="store.posts.headerTitle">
+            {{ store.articleInfo.title }}
           </div>
         </Transition>
       </div>

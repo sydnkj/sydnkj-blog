@@ -1,41 +1,48 @@
 <script setup>
 import CommentIcon from '@assets/icons/CommentIcon.vue';
 import CalendarIcon from '@assets/icons/CalendarIcon.vue';
-import { TransitionGroup } from 'vue';
 const props = defineProps({
   data: Object,
 });
 </script>
 <template>
   <div class="big-card-container">
-    <div class="big-card" v-for="item in props.data" :key="item.articleId">
+    <div class="big-card" v-for="item in props.data" :key="item.id">
       <div class="big-card-header">
-        <NuxtLink to="/posts/1">
-          <div class="big-card-title">
-            {{ item.title }}
-          </div>
-        </NuxtLink>
+        <div class="big-card-title">
+          <span class="big-card-category">{{ item.category }}</span>
+          <NuxtLink :to="'/posts/' + item.id">
+            <span class="big-card-title-content">{{ item.title }}</span>
+          </NuxtLink>
+        </div>
         <div class="big-card-author">
-          <a href="#" target="_blank">{{ item.author }}</a>
+          <NuxtLink :to="'#/users/' + item.author_id" target="_blank">{{ item.author }}</NuxtLink>
           <div style="display: flex; align-items: center">
             <CalendarIcon></CalendarIcon>
-            <span>{{ item.createDate }}</span>
+            <span>{{ new Date(item.create_date).toLocaleDateString() }}</span>
           </div>
         </div>
       </div>
       <div class="big-card-description">{{ item.summary }}</div>
       <div class="big-card-info">
-        <NuxtLink to="/posts/1">
-          <div class="big-card-info-more">
-            <span>阅读全文</span>
-            <span>→</span>
+        <div class="big-card-info-tags">
+          <div class="big-card-info-tag" v-for="tags in JSON.parse(item.tags)">
+            <NuxtLink :to="`#/tags/${tags}`">#{{ tags }}</NuxtLink>
           </div>
-        </NuxtLink>
-        <div class="big-card-info-counts">
-          <div class="big-card-info-count-item">
-            <CommentIcon></CommentIcon>
-            <span>{{ item.commentCount }}</span>
+        </div>
+        <div class="big-card-info-right">
+          <div class="big-card-info-counts">
+            <div class="big-card-info-count-item">
+              <CommentIcon></CommentIcon>
+              <span>{{ item.comment_count }}</span>
+            </div>
           </div>
+          <NuxtLink :to="`/posts/${item.id}`">
+            <div class="big-card-info-more">
+              <span>阅读全文</span>
+              <span>→</span>
+            </div>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -65,6 +72,9 @@ const props = defineProps({
 .big-card-header {
   border-bottom: dashed 1px var(--border-color);
   transition: all 0.25s ease-in-out;
+}
+.big-card-header a {
+  color: var(--text-color);
 }
 .big-card-title {
   font-size: 22px;
@@ -129,7 +139,17 @@ const props = defineProps({
   transition: all 0.25s ease-in-out;
   padding-left: 2px;
 }
-
+.big-card-info-tags,
+.big-card-info-right {
+  display: flex;
+  flex-direction: row;
+  gap: calc(var(--gap-size) / 2);
+}
+.big-card-info-tag,
+.big-card-info-tag a {
+  cursor: pointer;
+  color: var(--text-color);
+}
 .big-card-info-counts {
   display: flex;
   flex-direction: row;
@@ -153,9 +173,21 @@ const props = defineProps({
 html.dark .big-card-title {
   color: var(--text-color);
 }
+.big-card-category {
+  font-size: 14px;
+  font-weight: normal;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 4px;
+  border-radius: 5px;
+  border: 1px dotted var(--border-color);
+}
+.big-card-title-content {
+  margin-left: 10px;
+}
 
 /* hovers */
-.big-card-title:hover {
+.big-card-title-content:hover {
   color: var(--hover-text-color);
 }
 
@@ -164,7 +196,7 @@ html.dark .big-card-title {
     transform: translateY(-2px);
     background-color: var(--big-card-hover-background-color);
   }
-  html.dark .big-card-title:hover {
+  html.dark .big-card-title-content:hover {
     color: var(--hover-text-color);
   }
   html.dark .big-card:hover {
@@ -175,6 +207,14 @@ html.dark .big-card-title {
   }
   .big-card-info a:hover {
     opacity: 0.8;
+  }
+  .big-card-category:hover {
+    color: var(--hover-text-color);
+  }
+}
+@media (max-width: 475px) {
+  .big-card-info-tag {
+    display: none;
   }
 }
 </style>
