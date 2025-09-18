@@ -4,31 +4,36 @@ import CalendarIcon from '@assets/icons/CalendarIcon';
 import WordIcon from '@assets/icons/WordIcon.vue';
 import ReadIcon from '@assets/icons/ReadIcon.vue';
 import CommentIcon from '@assets/icons/CommentIcon.vue';
-import { onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { marked } from 'marked';
+
 const route = useRoute();
 const store = useStore();
 const titleRef = ref(null);
+const articleData = ref({});
+const articleContent = ref('');
 // 从后端获取数据
 if (!store.server.error) {
-  const { data } = await useFetch('/api/article/' + route.params.id, {
+  const { data } = await useFetch(() => `/api/article/${route.params.id}`, {
     method: 'get',
-    immediate: store.articleInfo === undefined,
   });
   if (data.value) {
     const resp = data.value;
     if (resp.status !== 'failed') {
-      store.articleInfo = resp.data;
+      articleData.value = data.value.data;
+      store.posts.title = data.value.data.title;
+      articleContent.value = marked.parse(articleData.value.content);
     } else {
       errorMessage.value = resp.error.message;
     }
   }
 }
-onBeforeUnmount(() => {
-  delete store.articleInfo;
-});
 useHead({
-  title: store.articleInfo.title + ' · 书彦电脑科技',
+  title: articleData.value.title + ' · 书彦电脑科技',
+  link: [
+    { rel: 'stylesheet', href: 'https://cdn.bootcdn.net/ajax/libs/github-markdown-css/5.8.1/github-markdown.css' },
+  ],
 });
 // 检测滚动，当标题不可见时，在headers显示标题，限流150ms检测一次
 let scrollFlag = true;
@@ -57,31 +62,31 @@ onUnmounted(() => {
   <div id="body">
     <div class="article-information" ref="titleRef">
       <div class="article-tags">
-        <div class="article-tag" v-for="item in JSON.parse(store.articleInfo.tags)">#{{ item }}</div>
+        <div class="article-tag" v-for="item in JSON.parse(articleData.tags)">#{{ item }}</div>
       </div>
       <div class="article-title">
-        <span>{{ store.articleInfo.title }}</span>
+        <span>{{ articleData.title }}</span>
       </div>
       <div class="article-info">
         <div class="article-info-date" title="发布日期">
           <CalendarIcon></CalendarIcon>
-          <span>{{ new Date(store.articleInfo.create_date).toLocaleDateString() }}</span>
+          <span>{{ new Date(articleData.create_date).toLocaleString() }}</span>
         </div>
         <div title="字数">
           <WordIcon></WordIcon>
-          <span>{{ store.articleInfo.content.length }}</span>
+          <span>{{ articleData.content.length }}字</span>
         </div>
         <div title="阅读时间">
           <ReadIcon></ReadIcon>
-          <span>{{ Math.max(1, Math.floor(Number(store.articleInfo.content.length / 200))) }}分钟</span>
+          <span>{{ Math.max(1, Math.floor(Number(articleData.content.length / 300))) }}分钟</span>
         </div>
         <div title="评论数">
           <CommentIcon></CommentIcon>
-          <span>{{ store.articleInfo.comment_count }}</span>
+          <span>{{ articleData.comment_count }}条评论</span>
         </div>
       </div>
     </div>
-    <article v-html="store.articleInfo.content" class="article-body" />
+    <article v-html="articleContent" class="markdown-body"></article>
   </div>
 </template>
 <style scoped>
@@ -146,7 +151,7 @@ onUnmounted(() => {
 .article-info-date {
   font-size: 16px;
 }
-.article-body {
+::v-deep(.markdown-body) {
   background-color: var(--background-color);
   box-sizing: border-box;
   padding: 20px;
@@ -154,17 +159,20 @@ onUnmounted(() => {
   font-size: 18px;
   margin: 20px 0;
 }
-::v-deep(.article-body) p:nth-child(1) {
+::v-deep([id]) {
+  scroll-margin-top: 90px;
+}
+::v-deep(.markdown-body) p:nth-child(1) {
   margin-top: 0;
 }
-::v-deep(.article-body) p:nth-last-child(1) {
+::v-deep(.markdown-body) p:nth-last-child(1) {
   margin-bottom: 0;
 }
 @media (max-width: 475px) {
   .article-information {
     padding: 50px 20px 0 20px;
   }
-  .article-body {
+  .markdown-body {
     margin: 20px 10px;
   }
 }
