@@ -4,8 +4,8 @@ export default defineEventHandler(async (event) => {
   // 构造请求参数
   let { headers, method, originalUrl } = event.node.req;
   const protocol = 'http';
-  const host = '127.0.0.1';
-  const port = 8889;
+  const host = process.env.SERVER_HOST || '127.0.0.1';
+  const port = process.env.SERVER_PORT || 4000;
   // 删除无用请求头
   const forbiddenHeaders = [
     'host',
