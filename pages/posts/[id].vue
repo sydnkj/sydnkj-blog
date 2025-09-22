@@ -17,21 +17,19 @@ const articleData = ref({});
 const bytemdPlugins = [hljs()];
 // 从后端获取数据
 if (!store.server.error) {
-  useFetch(() => `/api/article/${route.params.id}`, {
+  const resp = await useFetch(`/api/article/${route.params.id}`, {
     method: 'get',
-  }).then((resp) => {
-    const { data } = resp;
-    console.log(data);
-    if (data.value) {
-      const result = data.value;
-      if (result.status !== 'failed') {
-        articleData.value = result.data;
-        store.posts.title = result.data.title;
-      } else {
-        errorMessage.value = resp.error.message;
-      }
-    }
   });
+  const { data } = resp;
+  if (data.value) {
+    const result = data.value;
+    if (result.status !== 'failed') {
+      articleData.value = result.data;
+      store.posts.title = result.data.title;
+    } else {
+      errorMessage.value = resp.error.message;
+    }
+  }
 }
 useHead({
   title: articleData.value.title + ' · 书彦电脑科技',

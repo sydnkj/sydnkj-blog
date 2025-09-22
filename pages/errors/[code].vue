@@ -1,22 +1,12 @@
 <script setup>
-import { onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useStore } from '~/store/main.js';
 const store = useStore();
 const route = useRoute();
-const router = useRouter();
-onBeforeRouteLeave((to, from, next) => {
-  if (!store.server.error) {
-    return next();
-  }
-});
-if (!store.server.error) {
-  router.push('/');
-}
 const codeMessage = {
   400: 'Bad Request（请求参数错误或格式无效）',
   401: 'Unauthorized（未授权，需登录或令牌无效）',
-  402: 'Payment Required（需要付费，较少使用）',
+  402: 'Payment Required（需要付费）',
   403: 'Forbidden（服务器拒绝访问，权限不足）',
   404: 'Not Found（请求的资源不存在）',
   405: 'Method Not Allowed（请求方法不被允许）',
@@ -56,6 +46,5 @@ const codeMessage = {
 </script>
 <template>
   <h1>{{ route.params.code }}</h1>
-  <h2>{{ store.server.error.message ?? codeMessage[route.params.code] }}</h2>
-  <a href="/"><button>返回首页</button></a>
+  <h2>{{ store.server.errMessage ?? codeMessage[route.params.code] }}</h2>
 </template>

@@ -7,6 +7,6 @@ export default defineNuxtConfig({
   devServer: {
     port: 8888,
   },
-  css: ['./assets/global.css'],
+  css: ['../assets/global.css'],
   modules: ['@pinia/nuxt'],
 });

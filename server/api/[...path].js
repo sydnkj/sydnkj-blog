@@ -53,12 +53,15 @@ export default defineEventHandler(async (event) => {
     console.log(`[${date}] server/api Error: ${err.message || err.code}`); // 后续替换更高级的日志系统
     let message =
       err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message;
+    let statusCode = null;
     if (message?.includes('connect ECONNREFUSED')) {
       message = '与后端建立连接时发生错误，请联系管理员';
+      statusCode = 500;
     }
     return {
       status: 'failed',
       error: {
+        statusCode,
         message: message || '发生未知错误',
       },
     };

@@ -19,6 +19,7 @@ export const useStore = defineStore('main', {
       // 服务器状态
       server: {
         error: false,
+        message: '',
       },
     };
   },
