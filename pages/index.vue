@@ -1,8 +1,8 @@
 <script setup>
-import ArticleLists from '@/index/ArticleLists.vue';
-import CardCountDown from '@/index/CardCountDown.vue';
-import Calendar from '@/index/Calendar.vue';
-import CardSiteInfo from '@/index/CardSiteInfo.vue';
+import ArticleLists from '../components/index/ArticleLists.vue';
+import CardCountDown from '../components/index/CardCountDown.vue';
+import Calendar from '../components/index/Calendar.vue';
+import CardSiteInfo from '../components/index/CardSiteInfo.vue';
 import { useStore } from '~/store/main.js';
 const store = useStore();
 // 配置网页标题

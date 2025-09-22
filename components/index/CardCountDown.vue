@@ -1,6 +1,6 @@
 <script setup>
-import FlagIcon from '@assets/icons/FlagIcon.vue';
-import CalendarIcon from '@assets/icons/CalendarIcon.vue';
+import FlagIcon from '../../assets/icons/FlagIcon.vue';
+import CalendarIcon from '../../assets/icons/CalendarIcon.vue';
 import { ref } from 'vue';
 import { useStore } from '~/store/main.js';
 const store = useStore();

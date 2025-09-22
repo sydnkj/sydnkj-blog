@@ -1,5 +1,5 @@
 <script setup>
-import CalendarIcon from '@assets/icons/CalendarIcon.vue';
+import CalendarIcon from '../../assets/icons/CalendarIcon.vue';
 import { onMounted, ref } from 'vue';
 
 // 获取当前日期信息

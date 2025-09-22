@@ -1,6 +1,6 @@
 <script setup>
-import Header from '@/headers/Header.vue';
-import Footer from '@/footers/Footer.vue';
+import Header from './components/headers/Header.vue';
+import Footer from './components//footers/Footer.vue';
 import { useStore } from '~/store/main.js';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';

@@ -1,33 +1,37 @@
 <script setup>
 import { useStore } from '~/store/main.js';
-import CalendarIcon from '@assets/icons/CalendarIcon';
-import WordIcon from '@assets/icons/WordIcon.vue';
-import ReadIcon from '@assets/icons/ReadIcon.vue';
-import CommentIcon from '@assets/icons/CommentIcon.vue';
+import CalendarIcon from '../../assets/icons/CalendarIcon';
+import WordIcon from '../../assets/icons/WordIcon.vue';
+import ReadIcon from '../../assets/icons/ReadIcon.vue';
+import CommentIcon from '../../assets/icons/CommentIcon.vue';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { marked } from 'marked';
+import { Viewer } from '@bytemd/vue-next';
+import hljs from '@bytemd/plugin-highlight-ssr';
+import 'highlight.js/styles/github.css';
 
 const route = useRoute();
 const store = useStore();
 const titleRef = ref(null);
 const articleData = ref({});
-const articleContent = ref('');
+const bytemdPlugins = [hljs()];
 // 从后端获取数据
 if (!store.server.error) {
-  const { data } = await useFetch(() => `/api/article/${route.params.id}`, {
+  useFetch(() => `/api/article/${route.params.id}`, {
     method: 'get',
-  });
-  if (data.value) {
-    const resp = data.value;
-    if (resp.status !== 'failed') {
-      articleData.value = data.value.data;
-      store.posts.title = data.value.data.title;
-      articleContent.value = marked.parse(articleData.value.content);
-    } else {
-      errorMessage.value = resp.error.message;
+  }).then((resp) => {
+    const { data } = resp;
+    console.log(data);
+    if (data.value) {
+      const result = data.value;
+      if (result.status !== 'failed') {
+        articleData.value = result.data;
+        store.posts.title = result.data.title;
+      } else {
+        errorMessage.value = resp.error.message;
+      }
     }
-  }
+  });
 }
 useHead({
   title: articleData.value.title + ' · 书彦电脑科技',
@@ -86,7 +90,8 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
-    <article v-html="articleContent" class="markdown-body"></article>
+    <!-- <article v-html="articleContent" class="markdown-body"></article> -->
+    <Viewer class="markdown-body" :value="articleData.content" :plugins="bytemdPlugins"></Viewer>
   </div>
 </template>
 <style scoped>
