@@ -1,6 +1,6 @@
 <script setup>
-import Header from '~/components/headers/Header.vue';
-import Footer from '~/components/footers/Footer.vue';
+import Header from '~/components/headers/header.vue';
+import Footer from '~/components/footers/footer.vue';
 import { useStore } from '~/store/main.js';
 import { storeToRefs } from 'pinia';
 const store = useStore();
