@@ -1,20 +1,23 @@
 <script setup>
 import { useStore } from '~/store/main.js';
-import CalendarIcon from '../../assets/icons/CalendarIcon';
-import WordIcon from '../../assets/icons/WordIcon.vue';
-import ReadIcon from '../../assets/icons/ReadIcon.vue';
-import CommentIcon from '../../assets/icons/CommentIcon.vue';
-import { onMounted, onUnmounted, ref } from 'vue';
+import CalendarIcon from '../../assets/icons/calendar-icon';
+import WordIcon from '../../assets/icons/word-icon.vue';
+import ReadIcon from '../../assets/icons/read-icon.vue';
+import CommentIcon from '../../assets/icons/comment-icon.vue';
+import FolderIcon from '../../assets/icons/folder-icon.vue';
+import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { Viewer } from '@bytemd/vue-next';
 import hljs from '@bytemd/plugin-highlight-ssr';
-import 'highlight.js/styles/github.css';
+import '../../assets/github-markdown.css';
+import '../../assets/github-hljs.css';
 
 const route = useRoute();
 const store = useStore();
 const titleRef = ref(null);
 const articleData = ref({});
 const bytemdPlugins = [hljs()];
+
 // 从后端获取数据
 if (!store.server.error) {
   const resp = await useFetch(`/api/article/${route.params.id}`, {
@@ -31,11 +34,10 @@ if (!store.server.error) {
     }
   }
 }
+
 useHead({
   title: articleData.value.title + ' · 书彦电脑科技',
-  link: [
-    { rel: 'stylesheet', href: 'https://cdn.bootcdn.net/ajax/libs/github-markdown-css/5.8.1/github-markdown.css' },
-  ],
+  link: [],
 });
 // 检测滚动，当标题不可见时，在headers显示标题，限流150ms检测一次
 let scrollFlag = true;
@@ -50,46 +52,65 @@ const handleScroll = () => {
   scrollFlag = false;
   setTimeout(() => {
     scrollFlag = true;
-  }, 150);
+  }, 50);
 };
 onMounted(() => {
-  document.addEventListener('scroll', handleScroll);
+  if (!import.meta.env.SSR) {
+    nextTick(() => {
+      document.addEventListener('scroll', handleScroll);
+    });
+  }
 });
 onUnmounted(() => {
-  document.removeEventListener('scroll', handleScroll);
-  store.posts.headerTitle = false;
+  if (!import.meta.env.SSR) {
+    nextTick(() => {
+      document.removeEventListener('scroll', handleScroll);
+      store.posts.headerTitle = false;
+    });
+  }
 });
+const formatDate = (datetime) => {
+  const year = datetime.getFullYear();
+  const month = datetime.getMonth() + 1;
+  const day = datetime.getDay();
+  const hour = datetime.getHours();
+  const minute = datetime.getMinutes();
+  return `${year}年${month}月${day}日 ${hour}时${minute}分`;
+};
 </script>
 <template>
   <div id="body">
     <div class="article-information" ref="titleRef">
-      <div class="article-tags">
-        <div class="article-tag" v-for="item in JSON.parse(articleData.tags)">#{{ item }}</div>
-      </div>
       <div class="article-title">
         <span>{{ articleData.title }}</span>
       </div>
       <div class="article-info">
         <div class="article-info-date" title="发布日期">
           <CalendarIcon></CalendarIcon>
-          <span>{{ new Date(articleData.create_date).toLocaleString() }}</span>
+          <span>{{ formatDate(new Date(articleData.create_date)) }}</span>
+        </div>
+        <div title="分类">
+          <FolderIcon></FolderIcon>
+          <span>分类于 {{ articleData.category }}</span>
         </div>
         <div title="字数">
           <WordIcon></WordIcon>
-          <span>{{ articleData.content.length }}字</span>
+          <span>{{ articleData.content.length }} 字</span>
         </div>
         <div title="阅读时间">
           <ReadIcon></ReadIcon>
-          <span>{{ Math.max(1, Math.floor(Number(articleData.content.length / 300))) }}分钟</span>
+          <span>大约 {{ Math.max(1, Math.floor(Number(articleData.content.length / 300))) }} 分钟</span>
         </div>
         <div title="评论数">
           <CommentIcon></CommentIcon>
-          <span>{{ articleData.comment_count }}条评论</span>
+          <span>{{ articleData.comment_count }} 条评论</span>
         </div>
       </div>
     </div>
-    <!-- <article v-html="articleContent" class="markdown-body"></article> -->
     <Viewer class="markdown-body" :value="articleData.content" :plugins="bytemdPlugins"></Viewer>
+    <div class="article-tags">
+      <div class="article-tag" v-for="item in JSON.parse(articleData.tags)">#{{ item }}</div>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -101,40 +122,43 @@ onUnmounted(() => {
   flex-direction: column;
   animation-name: opacityInto;
   animation-duration: 1s;
-}
-#body * {
-  transition: all 0.25s ease-in-out;
+  padding: 20px;
+  box-sizing: border-box;
 }
 .article-information {
   box-sizing: border-box;
-  padding-top: 50px;
+  padding-top: 30px;
 }
 .article-tags {
+  margin-top: 20px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: var(--gap-size);
   color: var(--text-color);
+  justify-content: center;
 }
 .article-tag {
   box-sizing: border-box;
-  padding: 5px;
   border-radius: 5px;
+  padding: 4px;
   cursor: pointer;
-  font-weight: bold;
-  background-color: var(--hover-background-color);
+  background-color: var(--background-color);
+  transition: all 0.25s ease-in-out;
 }
 .article-title {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 0;
   font-size: 36px;
   font-weight: bold;
 }
 .article-info {
   font-size: 16px;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   gap: var(--gap-size);
+  margin-top: 10px;
 }
 .article-info svg {
   width: 18px;
@@ -144,39 +168,48 @@ onUnmounted(() => {
   padding: 5px;
   display: flex;
   flex-direction: row;
-  gap: 2px;
+  gap: 4px;
   cursor: pointer;
   border-radius: 5px;
-}
-.article-info > div:hover {
-  background-color: var(--hover-background-color);
 }
 .article-info-date {
   font-size: 16px;
 }
-::v-deep(.markdown-body) {
-  background-color: var(--background-color);
-  box-sizing: border-box;
-  padding: 20px;
-  border-radius: 10px;
-  font-size: 18px;
-  margin: 20px 0;
-}
 ::v-deep([id]) {
   scroll-margin-top: 90px;
 }
-::v-deep(.markdown-body) p:nth-child(1) {
-  margin-top: 0;
+.markdown-body {
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  transition: all 0.25s ease-in-out;
+  margin-top: 20px;
 }
-::v-deep(.markdown-body) p:nth-last-child(1) {
-  margin-bottom: 0;
+::v-deep(.markdown-body) * {
+  transition: all 0.25s ease-in-out;
+}
+.markdown-body.bigger {
+  font-size: 18px;
+}
+.markdown-body.bigger .hljs {
+  font-size: 16px;
 }
 @media (max-width: 475px) {
-  .article-information {
-    padding: 50px 20px 0 20px;
+  .article-tags {
+    font-size: 12px;
+    padding: 2px;
+    row-gap: calc(var(--gap-size) / 3);
+    column-gap: 0;
   }
-  .markdown-body {
-    margin: 20px 10px;
+  .article-info {
+    font-size: 16px;
+    row-gap: calc(var(--gap-size) / 3);
+    column-gap: 0;
+  }
+}
+@media (any-hover: hover) {
+  .article-info > div:hover {
+    background-color: var(--hover-background-color);
   }
 }
 </style>

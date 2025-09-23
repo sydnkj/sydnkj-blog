@@ -1,7 +1,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
-import SunnyIcon from '~/assets/icons/SunnyIcon.vue';
-import MoonIcon from '~/assets/icons/MoonIcon.vue';
+import SunnyIcon from '~/assets/icons/sunny-icon.vue';
+import MoonIcon from '~/assets/icons/moon-icon.vue';
 import { useStore } from '~/store/main.js';
 const store = useStore();
 const { darkMode } = storeToRefs(store);

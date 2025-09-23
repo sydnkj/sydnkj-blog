@@ -1,12 +1,14 @@
 <script setup>
 import Header from '~/components/headers/Header.vue';
-import Footer from '~/components//footers/Footer.vue';
+import Footer from '~/components/footers/Footer.vue';
 import { useStore } from '~/store/main.js';
+import { storeToRefs } from 'pinia';
 const store = useStore();
+const { darkMode } = storeToRefs(store);
 // 配置网页信息
 useHead({
   htmlAttrs: {
-    class: store.darkMode ? 'dark' : '',
+    class: { dark: darkMode },
   },
   meta: [
     {

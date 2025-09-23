@@ -1,6 +1,6 @@
 <script setup>
-import ThemeChange from './ThemeChange.vue';
-import Logo from './Logo.vue';
+import ThemeChange from './theme-change.vue';
+import Logo from './logo.vue';
 import { useStore } from '~/store/main.js';
 const store = useStore();
 const toTop = () => {

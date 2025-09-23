@@ -1,5 +1,5 @@
 <script setup>
-import BigCard from './BigCard.vue';
+import BigCard from './big-card.vue';
 import { useStore } from '~/store/main.js';
 const store = useStore();
 const errorMessage = ref('');

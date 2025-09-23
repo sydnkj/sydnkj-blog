@@ -1,6 +1,6 @@
 <script setup>
-import CommentIcon from '../../assets/icons/CommentIcon.vue';
-import CalendarIcon from '../../assets/icons/CalendarIcon.vue';
+import CommentIcon from '../../assets/icons/comment-icon.vue';
+import CalendarIcon from '../../assets/icons/calendar-icon.vue';
 const props = defineProps({
   data: Object,
 });

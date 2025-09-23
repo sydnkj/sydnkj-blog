@@ -4,7 +4,7 @@
       <div class="footer-info">
         <div class="copyright">
           Copyright © {{ new Date().getFullYear() }}
-          <a href="/" target="_self" class="site-link">小温技术知识</a>
+          <a href="/" target="_self" class="site-link">书彦电脑科技</a>
         </div>
         <div class="powered-by">
           Powered by

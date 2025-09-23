@@ -1,8 +1,8 @@
 <script setup>
-import ArticleLists from '../components/index/ArticleLists.vue';
-import CardCountDown from '../components/index/CardCountDown.vue';
-import Calendar from '../components/index/Calendar.vue';
-import CardSiteInfo from '../components/index/CardSiteInfo.vue';
+import ArticleLists from '../components/index/article-lists.vue';
+import CardCountDown from '../components/index/card-count-down.vue';
+import Calendar from '../components/index/calendar.vue';
+import CardSiteInfo from '../components/index/card-site-info.vue';
 // 配置网页标题
 useHead({
   title: '信丰县书彦电脑科技 · 首页',
