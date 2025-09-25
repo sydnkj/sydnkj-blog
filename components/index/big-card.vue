@@ -1,6 +1,7 @@
 <script setup>
 import CommentIcon from '../../assets/icons/comment-icon.vue';
 import CalendarIcon from '../../assets/icons/calendar-icon.vue';
+import { formatDate } from '../../utils/date';
 const props = defineProps({
   data: Object,
 });
@@ -19,7 +20,7 @@ const props = defineProps({
           <NuxtLink :to="'#/users/' + item.author_id" target="_blank">{{ item.author }}</NuxtLink>
           <div style="display: flex; align-items: center">
             <CalendarIcon></CalendarIcon>
-            <span>{{ new Date(item.create_date).toLocaleDateString() }}</span>
+            <span>{{ formatDate(new Date(item.create_date), 2) }}</span>
           </div>
         </div>
       </div>

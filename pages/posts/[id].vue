@@ -11,6 +11,7 @@ import { Viewer } from '@bytemd/vue-next';
 import hljs from '@bytemd/plugin-highlight-ssr';
 import '../../assets/github-markdown.css';
 import '../../assets/github-hljs.css';
+import { formatDate } from '../../utils/date';
 
 const route = useRoute();
 const store = useStore();
@@ -69,14 +70,6 @@ onUnmounted(() => {
     });
   }
 });
-const formatDate = (datetime) => {
-  const year = datetime.getFullYear();
-  const month = datetime.getMonth() + 1;
-  const day = datetime.getDay();
-  const hour = datetime.getHours();
-  const minute = datetime.getMinutes();
-  return `${year}年${month}月${day}日 ${hour}时${minute}分`;
-};
 </script>
 <template>
   <div id="body">

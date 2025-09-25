@@ -1,10 +1,12 @@
-FROM node:24.8-alpine
+FROM node:24.8-trixie-slim
+
+ENV TZ=Asia/Shanghai
 
 WORKDIR /app
 
 COPY . ./source/
 
-RUN cd ./source ; yarn --production ; yarn build ; mv ./.output/* ../ ; cd .. ; rm -rf ./source ; yarn cache clean --all  
+RUN bash ./source/scripts/build.sh  
 
 EXPOSE 3000
 
