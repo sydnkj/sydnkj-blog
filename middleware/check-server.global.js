@@ -18,7 +18,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     }
   }
   // 后端正常，判断是否在错误页，在就跳转到首页
-  if (to.path.startsWith('/errors/')) {
+  else if (to.path.startsWith('/errors/')) {
     return navigateTo('/');
   }
 });
