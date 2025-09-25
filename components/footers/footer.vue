@@ -1,10 +1,12 @@
 <script setup>
-import { useRuntimeConfig } from 'nuxt/app';
-
-const runtimeConfig = useRuntimeConfig();
+import { useState } from 'nuxt/app';
+const icpNumer = useState('icpNumer', () => null);
+const mpsNumer = useState('mpsNumer', () => null);
 const event = useRequestEvent();
-const icpNumer = event?.node?.req?.headers['x-beian-icp'] || null;
-const mpsNumer = event?.node?.req?.headers['x-beian-mps'] || null;
+if (event) {
+  icpNumer.value = event.node?.req?.headers['x-beian-icp'] ? decodeURI(event.node?.req?.headers['x-beian-icp']) : null;
+  mpsNumer.value = event.node?.req?.headers['x-beian-mps'] ? decodeURI(event.node?.req?.headers['x-beian-mps']) : null;
+}
 </script>
 <template>
   <footer>
@@ -27,8 +29,10 @@ const mpsNumer = event?.node?.req?.headers['x-beian-mps'] || null;
         </a>
         <span v-if="icpNumer && mpsNumer" class="separator">·</span>
         <a
-          v-if="icpNumer"
-          :href="`https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=${mpsNumer.match(/\d+/)[0]}`"
+          v-if="mpsNumer"
+          :href="`https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=${
+            mpsNumer ? mpsNumer.match(/\d+/)[0] : ''
+          }`"
           target="_blank"
           class="beian-link"
         >
