@@ -16,6 +16,13 @@ useHead({
       content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
     },
   ],
+  link: [
+    {
+      rel: 'stylesheet',
+      type: 'text/css',
+      href: 'https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css',
+    },
+  ],
 });
 </script>
 <template>

@@ -191,13 +191,18 @@ onUnmounted(() => {
   .article-tags {
     font-size: 12px;
     padding: 2px;
-    row-gap: calc(var(--gap-size) / 3);
-    column-gap: 0;
+    gap: calc(var(--gap-size) / 3);
   }
   .article-info {
     font-size: 16px;
-    row-gap: calc(var(--gap-size) / 3);
-    column-gap: 0;
+    justify-content: center;
+    gap: calc(var(--gap-size) / 3);
+  }
+  .article-title {
+    text-align: center;
+  }
+  #body {
+    padding: 10px;
   }
 }
 @media (any-hover: hover) {

@@ -1,3 +1,11 @@
+<script setup>
+import { useRuntimeConfig } from 'nuxt/app';
+
+const runtimeConfig = useRuntimeConfig();
+const event = useRequestEvent();
+const icpNumer = event?.node?.req?.headers['x-beian-icp'] || null;
+const mpsNumer = event?.node?.req?.headers['x-beian-mps'] || null;
+</script>
 <template>
   <footer>
     <div class="footer-container">
@@ -13,16 +21,18 @@
           <a href="https://vuejs.org" target="_blank" class="tech-link">Vue3</a>
         </div>
       </div>
-      <div class="beian">
-        <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" class="beian-link">
-          赣ICP备2024039096号
+      <div class="powered-by">
+        <a v-if="icpNumer" href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" class="beian-link">
+          {{ icpNumer }}
         </a>
+        <span v-if="icpNumer && mpsNumer" class="separator">·</span>
         <a
-          href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36072202000256"
+          v-if="icpNumer"
+          :href="`https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=${mpsNumer.match(/\d+/)[0]}`"
           target="_blank"
           class="beian-link"
         >
-          赣公网安备36072202000256号
+          {{ mpsNumer }}
         </a>
       </div>
       <div class="footer-divider"></div>
@@ -107,14 +117,7 @@ footer {
 .separator {
   color: #6c757d;
 }
-.beian {
-  display: flex;
-  flex-flow: row wrap;
-  gap: 16px;
-  padding: 8px 0;
-  justify-content: center;
-  align-items: center;
-}
+
 .beian-link {
   color: #8d99ae;
   text-decoration: none;
